@@ -12,7 +12,7 @@ var room = !getParameterByName('room') ? prompt('Please tell me your room') : ge
 var username = !getParameterByName('username') ? prompt('Please tell me your name') : getParameterByName('username');
 var userid = !getParameterByName('userid') ? prompt('Please tell me your ID') : getParameterByName('userid');
 
-var socket = io.connect('http://localhost/', {
+var socket = io.connect(window.location.origin, {
 	path: "/MWChat/socket.io",
 	query: {
         userid: userid,

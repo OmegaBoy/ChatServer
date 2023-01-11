@@ -2,18 +2,21 @@ var express = require('express'),
 	http = require('http'),
 	app = express(),
 	server = http.createServer(app),
-  	virtualPath = process.env.VIRTUAL_PATH || "/",
+  	virtualPath = process.env.VIRTUAL_PATH || "/MWChat",
 	io = require('socket.io')(server, {path: virtualPath + '/socket.io'}),  
 	port = process.env.PORT || 3000;
 
-var sql = require("mssql/msnodesqlv8");
-
+const sql = require("mssql");
+// const connectionString = "server=.;Database=ChatDB;Trusted_Connection=Yes;Driver={SQL Server Native Client 11.0};";
 const pool = new sql.ConnectionPool({
-	database: 'MWChatDB',
+	user: 'mindware',
+	password: 'Mindware3355',
+	database: 'ChatDB',
 	server: 'localhost',
 	driver: 'msnodesqlv8',
+	port: 1433,
 	options: {
-	  trustedConnection: true
+		trustServerCertificate: true
 	}
   })
 
@@ -59,6 +62,18 @@ async function SaveHistory(msg){
 	}).catch(err => {
 		console.dir(err)
 	});
+}
+
+async function GetHistory(data){
+	pool.connect().then(pool => {
+		return pool.request()
+			.input('room', sql.VarChar(512), data.room)
+			.query('SELECT * FROM ChatHistory WHERE room = @room')
+		}).then(result => {
+			return result.recordset;
+		}).catch(err => {
+			console.dir(err)
+		});
 }
 
 io.on('connection', function(socket) {
@@ -137,15 +152,8 @@ io.on('connection', function(socket) {
 	});
 	
 	socket.on('history', function(data){
-		pool.connect().then(pool => {
-			return pool.request()
-				.input('room', sql.VarChar(512), data.room)
-				.query('SELECT * FROM ChatHistory WHERE room = @room')
-			}).then(result => {
-				socket.emit('history', result.recordset);
-			}).catch(err => {
-				socket.emit('DEBUG', err);
-			});
+		var history = GetHistory(data);
+		socket.emit('history', history);
 	});
 
 	socket.on('notification', function(data){

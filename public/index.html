@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Node.js Chat Testing Ground</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font: 13px Helvetica, Arial;
+    }
+
+    form {
+      background: #fff;
+      padding: 3px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      border-color: #000;
+      border-top-style: solid;
+      border-top-width: 1px;
+    }
+
+    form input {
+      border-style: solid;
+      border-width: 1px;
+      padding: 10px;
+      width: 85%;
+      margin-right: .5%;
+    }
+
+    form button {
+      width: 9%;
+      background: rgb(130, 224, 255);
+      border: none;
+      padding: 10px;
+      margin-left: 2%;
+    }
+
+    #messages {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    #messages li {
+      padding: 5px 10px;
+    }
+
+    #messages li:nth-child(odd) {
+      background: #eee;
+    }
+
+    button.fa {
+      display: inline-block;
+      border-radius: 60px;
+      box-shadow: 0px 0px 2px #888;
+      padding: 0.5em 0.6em;
+
+    }
+  </style>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+</head>
+
+<body>
+  <p>
+    <button class="w3-btn w3-blue w3-xlarge" onclick="DEBUG();">DEBUG<i class="w3-margin-left fa fa-bug"></i></button>
+    <button class="w3-btn w3-blue w3-xlarge" onclick="ExitRoom();"><i class="w3-margin-center fa fa-close"></i></button>
+  </p>
+  <ul id="messages"></ul>
+  <form action="/" method="POST" id="chatForm">
+    <input id="txt" autocomplete="off" autofocus="on" placeholder="type your message here..." /><button class="fa fa-paper-plane"></button>
+  </form>
+  <script src="/MWChat/socket.io/socket.io.js"></script>
+  <script src="/MWChat/chatclient.js"></script>
+</body>
+
+</html>
